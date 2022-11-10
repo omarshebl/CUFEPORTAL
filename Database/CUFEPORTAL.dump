@@ -1,0 +1,640 @@
+-- MySQL dump 10.13  Distrib 8.0.27, for macos11 (arm64)
+--
+-- Host: 127.0.01    Database: CUFEPORTAL
+-- ------------------------------------------------------
+-- Server version	8.0.28
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `ActivityRegistration`
+--
+
+DROP TABLE IF EXISTS `ActivityRegistration`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ActivityRegistration` (
+  `ACTIVITY_ID` int NOT NULL,
+  `POS_NAME` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `POS_TYPE` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `POS_MAJOR` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `POS_MIN_REQ` json NOT NULL,
+  `DEADLINE` date NOT NULL,
+  `SUBMISSION_LINK` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `VERSION_ID` int NOT NULL,
+  KEY `ACTIVITY_ID` (`ACTIVITY_ID`),
+  KEY `VERSION_ID` (`VERSION_ID`),
+  CONSTRAINT `activityregistration_ibfk_1` FOREIGN KEY (`ACTIVITY_ID`) REFERENCES `StudentActivity` (`ACTIVITY_ID`),
+  CONSTRAINT `activityregistration_ibfk_2` FOREIGN KEY (`VERSION_ID`) REFERENCES `StudentRegClassesVer` (`VERSION_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ActivityRegistration`
+--
+
+LOCK TABLES `ActivityRegistration` WRITE;
+/*!40000 ALTER TABLE `ActivityRegistration` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ActivityRegistration` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `AssignmentGrades`
+--
+
+DROP TABLE IF EXISTS `AssignmentGrades`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `AssignmentGrades` (
+  `ASSIGN_ID` int NOT NULL,
+  `STUDENT_ID` int NOT NULL,
+  `ASSIGN_GRADE` smallint DEFAULT NULL,
+  KEY `ASSIGN_ID` (`ASSIGN_ID`),
+  KEY `STUDENT_ID` (`STUDENT_ID`),
+  CONSTRAINT `assignmentgrades_ibfk_1` FOREIGN KEY (`ASSIGN_ID`) REFERENCES `Assignments` (`ASSIGN_ID`),
+  CONSTRAINT `assignmentgrades_ibfk_2` FOREIGN KEY (`STUDENT_ID`) REFERENCES `Students` (`STUDENT_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `AssignmentGrades`
+--
+
+LOCK TABLES `AssignmentGrades` WRITE;
+/*!40000 ALTER TABLE `AssignmentGrades` DISABLE KEYS */;
+/*!40000 ALTER TABLE `AssignmentGrades` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Assignments`
+--
+
+DROP TABLE IF EXISTS `Assignments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Assignments` (
+  `ASSIGN_ID` int NOT NULL AUTO_INCREMENT,
+  `CLASS_ID` int NOT NULL,
+  `ASSIGN_WEEK` int NOT NULL,
+  `ASSIGN_DAY` date NOT NULL,
+  `ASSIGN_M_GRADE` smallint NOT NULL,
+  `VERSION_ID` int NOT NULL,
+  PRIMARY KEY (`ASSIGN_ID`),
+  KEY `CLASS_ID` (`CLASS_ID`),
+  KEY `VERSION_ID` (`VERSION_ID`),
+  CONSTRAINT `assignments_ibfk_1` FOREIGN KEY (`CLASS_ID`) REFERENCES `Classes` (`CLASS_ID`),
+  CONSTRAINT `assignments_ibfk_2` FOREIGN KEY (`VERSION_ID`) REFERENCES `StudentRegClassesVer` (`VERSION_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Assignments`
+--
+
+LOCK TABLES `Assignments` WRITE;
+/*!40000 ALTER TABLE `Assignments` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Assignments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Calendar`
+--
+
+DROP TABLE IF EXISTS `Calendar`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Calendar` (
+  `EVENT_ID` int NOT NULL AUTO_INCREMENT,
+  `EVENT_NAME` text NOT NULL,
+  `EVENT_TYPE` text NOT NULL,
+  `EVENT_DATE` datetime NOT NULL,
+  `VERSION_ID` int NOT NULL,
+  PRIMARY KEY (`EVENT_ID`),
+  KEY `VERSION_ID` (`VERSION_ID`),
+  CONSTRAINT `calendar_ibfk_1` FOREIGN KEY (`VERSION_ID`) REFERENCES `StudentRegClassesVer` (`VERSION_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Calendar`
+--
+
+LOCK TABLES `Calendar` WRITE;
+/*!40000 ALTER TABLE `Calendar` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Calendar` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `CarPool`
+--
+
+DROP TABLE IF EXISTS `CarPool`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `CarPool` (
+  `STUDENT_ID` int NOT NULL,
+  `STUDENT_LOC` text NOT NULL,
+  `STUDENT_CAR` tinyint(1) NOT NULL,
+  `STUDENT_M_CAP` smallint DEFAULT NULL,
+  `STUDENT_MONEY` tinyint(1) NOT NULL,
+  `DAY_WANTED` text NOT NULL,
+  `VERSION_ID` int NOT NULL,
+  KEY `STUDENT_ID` (`STUDENT_ID`),
+  KEY `VERSION_ID` (`VERSION_ID`),
+  CONSTRAINT `carpool_ibfk_1` FOREIGN KEY (`STUDENT_ID`) REFERENCES `Students` (`STUDENT_ID`),
+  CONSTRAINT `carpool_ibfk_2` FOREIGN KEY (`VERSION_ID`) REFERENCES `StudentRegClassesVer` (`VERSION_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `CarPool`
+--
+
+LOCK TABLES `CarPool` WRITE;
+/*!40000 ALTER TABLE `CarPool` DISABLE KEYS */;
+/*!40000 ALTER TABLE `CarPool` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Classes`
+--
+
+DROP TABLE IF EXISTS `Classes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Classes` (
+  `CLASS_ID` int NOT NULL AUTO_INCREMENT,
+  `COURSE_CODE` char(7) NOT NULL,
+  `CLASS_ROOM` int NOT NULL,
+  `CLASS_TYPE_LEC` tinyint(1) NOT NULL,
+  `CLASS_DAY` smallint NOT NULL,
+  `CLASS_START` smallint NOT NULL,
+  `CLASS_END` smallint NOT NULL,
+  `CLASS_GROUP` smallint NOT NULL,
+  `CLASS_STATUS` smallint NOT NULL,
+  `CLASS_NUM_ENROLED` smallint NOT NULL,
+  `CLASS_M_NUM_ENROLED` smallint NOT NULL,
+  `CLASS_GGL_CR` text NOT NULL,
+  `VERSION_ID` int NOT NULL,
+  PRIMARY KEY (`CLASS_ID`),
+  KEY `VERSION_ID` (`VERSION_ID`),
+  CONSTRAINT `classes_ibfk_1` FOREIGN KEY (`VERSION_ID`) REFERENCES `StudentRegClassesVer` (`VERSION_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Classes`
+--
+
+LOCK TABLES `Classes` WRITE;
+/*!40000 ALTER TABLE `Classes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Classes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `CourseFinal`
+--
+
+DROP TABLE IF EXISTS `CourseFinal`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `CourseFinal` (
+  `COURSE_CODE` char(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `FINAL_DATE` datetime NOT NULL,
+  `FINAL_LOCATION` json NOT NULL,
+  `VERSION_ID` int NOT NULL,
+  KEY `VERSION_ID` (`VERSION_ID`),
+  KEY `COURSE_CODE` (`COURSE_CODE`),
+  CONSTRAINT `coursefinal_ibfk_1` FOREIGN KEY (`VERSION_ID`) REFERENCES `StudentRegClassesVer` (`VERSION_ID`),
+  CONSTRAINT `coursefinal_ibfk_2` FOREIGN KEY (`VERSION_ID`) REFERENCES `StudentRegClassesVer` (`VERSION_ID`),
+  CONSTRAINT `coursefinal_ibfk_3` FOREIGN KEY (`COURSE_CODE`) REFERENCES `Courses` (`COURSE_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `CourseFinal`
+--
+
+LOCK TABLES `CourseFinal` WRITE;
+/*!40000 ALTER TABLE `CourseFinal` DISABLE KEYS */;
+/*!40000 ALTER TABLE `CourseFinal` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Courses`
+--
+
+DROP TABLE IF EXISTS `Courses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Courses` (
+  `COURSE_ID` int NOT NULL AUTO_INCREMENT,
+  `COURSE_CODE` char(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `COURSE_NAME` text NOT NULL,
+  `COURSE_PREQ` json DEFAULT NULL,
+  `COURSE_MAJOR` text NOT NULL,
+  `COURSE_STATISTICS` json NOT NULL,
+  `COURSE_DRIVE_LINK` json NOT NULL,
+  `COURSE_ILO` longtext NOT NULL,
+  `LECTURE_DUR` smallint NOT NULL,
+  `TUTORIAL_DUR` smallint NOT NULL,
+  PRIMARY KEY (`COURSE_ID`),
+  UNIQUE KEY `SECONDRY` (`COURSE_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Courses`
+--
+
+LOCK TABLES `Courses` WRITE;
+/*!40000 ALTER TABLE `Courses` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Courses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `EmptyRooms`
+--
+
+DROP TABLE IF EXISTS `EmptyRooms`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `EmptyRooms` (
+  `CLASS_ROOM` int NOT NULL,
+  `CLASS_DAY` smallint NOT NULL,
+  `CLASS_START` smallint NOT NULL,
+  `CLASS_END` smallint NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `EmptyRooms`
+--
+
+LOCK TABLES `EmptyRooms` WRITE;
+/*!40000 ALTER TABLE `EmptyRooms` DISABLE KEYS */;
+/*!40000 ALTER TABLE `EmptyRooms` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Inquiry`
+--
+
+DROP TABLE IF EXISTS `Inquiry`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Inquiry` (
+  `INQUIRY_ID` int NOT NULL AUTO_INCREMENT,
+  `INQUIRY_DATE` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `INQUIRY_TEXT` text NOT NULL,
+  PRIMARY KEY (`INQUIRY_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Inquiry`
+--
+
+LOCK TABLES `Inquiry` WRITE;
+/*!40000 ALTER TABLE `Inquiry` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Inquiry` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Internships`
+--
+
+DROP TABLE IF EXISTS `Internships`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Internships` (
+  `INTERN_ID` int NOT NULL AUTO_INCREMENT,
+  `INTERN_NAME` text NOT NULL,
+  `INTERN_DESC` text NOT NULL,
+  `INTERN_COMP` text NOT NULL,
+  `INTERN_PLACE` text NOT NULL,
+  `INTERN_DATE` date NOT NULL,
+  `INTERN_STATUS` text NOT NULL,
+  `INTERN_LINK` text NOT NULL,
+  `INTERN_MAJOR` text NOT NULL,
+  `INTERN_REQ` json NOT NULL,
+  `INTERN_FINANCE` int NOT NULL,
+  PRIMARY KEY (`INTERN_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Internships`
+--
+
+LOCK TABLES `Internships` WRITE;
+/*!40000 ALTER TABLE `Internships` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Internships` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `MissingItems`
+--
+
+DROP TABLE IF EXISTS `MissingItems`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `MissingItems` (
+  `ITEM_ID` int NOT NULL AUTO_INCREMENT,
+  `STUDENT_ID` int NOT NULL,
+  `ITEM_TYPE` text NOT NULL,
+  `ITEM_VAL` int NOT NULL,
+  `ITEM_STATUS` text NOT NULL,
+  `ITEM_LOC` text NOT NULL,
+  `ITEM_ATTACH` blob,
+  PRIMARY KEY (`ITEM_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `MissingItems`
+--
+
+LOCK TABLES `MissingItems` WRITE;
+/*!40000 ALTER TABLE `MissingItems` DISABLE KEYS */;
+/*!40000 ALTER TABLE `MissingItems` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `QuizGrades`
+--
+
+DROP TABLE IF EXISTS `QuizGrades`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `QuizGrades` (
+  `QUIZ_ID` int NOT NULL,
+  `STUDENT_ID` int NOT NULL,
+  `QUIZ_GRADE` int DEFAULT NULL,
+  KEY `QUIZ_ID` (`QUIZ_ID`),
+  KEY `STUDENT_ID` (`STUDENT_ID`),
+  CONSTRAINT `quizgrades_ibfk_1` FOREIGN KEY (`QUIZ_ID`) REFERENCES `Quizzes` (`QUIZ_ID`),
+  CONSTRAINT `quizgrades_ibfk_2` FOREIGN KEY (`STUDENT_ID`) REFERENCES `Students` (`STUDENT_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `QuizGrades`
+--
+
+LOCK TABLES `QuizGrades` WRITE;
+/*!40000 ALTER TABLE `QuizGrades` DISABLE KEYS */;
+/*!40000 ALTER TABLE `QuizGrades` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Quizzes`
+--
+
+DROP TABLE IF EXISTS `Quizzes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Quizzes` (
+  `QUIZ_ID` int NOT NULL AUTO_INCREMENT,
+  `CLASS_ID` int NOT NULL,
+  `QUIZ_WEEK` smallint NOT NULL,
+  `QUIZ_DAY` date NOT NULL,
+  `QUIZ_M_GRADE` smallint DEFAULT NULL,
+  `VERSION_ID` int NOT NULL,
+  PRIMARY KEY (`QUIZ_ID`),
+  KEY `CLASS_ID` (`CLASS_ID`),
+  KEY `VERSION_ID` (`VERSION_ID`),
+  CONSTRAINT `quizzes_ibfk_1` FOREIGN KEY (`CLASS_ID`) REFERENCES `Classes` (`CLASS_ID`),
+  CONSTRAINT `quizzes_ibfk_2` FOREIGN KEY (`VERSION_ID`) REFERENCES `StudentRegClassesVer` (`VERSION_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Quizzes`
+--
+
+LOCK TABLES `Quizzes` WRITE;
+/*!40000 ALTER TABLE `Quizzes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Quizzes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `StudentActivity`
+--
+
+DROP TABLE IF EXISTS `StudentActivity`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `StudentActivity` (
+  `ACTIVITY_ID` int NOT NULL AUTO_INCREMENT,
+  `ACTIVITY_LOC` text NOT NULL,
+  `ACTIVITY_TYPE` text NOT NULL,
+  `ACTIVITY_NAME` text NOT NULL,
+  PRIMARY KEY (`ACTIVITY_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `StudentActivity`
+--
+
+LOCK TABLES `StudentActivity` WRITE;
+/*!40000 ALTER TABLE `StudentActivity` DISABLE KEYS */;
+/*!40000 ALTER TABLE `StudentActivity` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `StudentRegClasses`
+--
+
+DROP TABLE IF EXISTS `StudentRegClasses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `StudentRegClasses` (
+  `STUDENT_ID` int NOT NULL,
+  `CLASS_ID` int NOT NULL,
+  `REG_DATE` date NOT NULL,
+  `VERSION_ID` int NOT NULL,
+  KEY `STUDENT_ID` (`STUDENT_ID`),
+  KEY `CLASS_ID` (`CLASS_ID`),
+  KEY `VERSION_ID` (`VERSION_ID`),
+  CONSTRAINT `studentregclasses_ibfk_1` FOREIGN KEY (`STUDENT_ID`) REFERENCES `Students` (`STUDENT_ID`),
+  CONSTRAINT `studentregclasses_ibfk_2` FOREIGN KEY (`CLASS_ID`) REFERENCES `Classes` (`CLASS_ID`),
+  CONSTRAINT `studentregclasses_ibfk_3` FOREIGN KEY (`VERSION_ID`) REFERENCES `StudentRegClassesVer` (`VERSION_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `StudentRegClasses`
+--
+
+LOCK TABLES `StudentRegClasses` WRITE;
+/*!40000 ALTER TABLE `StudentRegClasses` DISABLE KEYS */;
+/*!40000 ALTER TABLE `StudentRegClasses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `StudentRegClassesVer`
+--
+
+DROP TABLE IF EXISTS `StudentRegClassesVer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `StudentRegClassesVer` (
+  `VERSION_ID` int NOT NULL AUTO_INCREMENT,
+  `VERSION_TERM` smallint NOT NULL,
+  `VERSION_YEAR` year NOT NULL,
+  `VERSION_DAY` int NOT NULL,
+  PRIMARY KEY (`VERSION_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `StudentRegClassesVer`
+--
+
+LOCK TABLES `StudentRegClassesVer` WRITE;
+/*!40000 ALTER TABLE `StudentRegClassesVer` DISABLE KEYS */;
+/*!40000 ALTER TABLE `StudentRegClassesVer` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `StudentReps`
+--
+
+DROP TABLE IF EXISTS `StudentReps`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `StudentReps` (
+  `CLASS_ID` int NOT NULL,
+  `STUDENT_ID` int NOT NULL,
+  `VERSION_ID` int NOT NULL,
+  KEY `CLASS_ID` (`CLASS_ID`),
+  KEY `STUDENT_ID` (`STUDENT_ID`),
+  KEY `VERSION_ID` (`VERSION_ID`),
+  CONSTRAINT `studentreps_ibfk_1` FOREIGN KEY (`CLASS_ID`) REFERENCES `Classes` (`CLASS_ID`),
+  CONSTRAINT `studentreps_ibfk_2` FOREIGN KEY (`STUDENT_ID`) REFERENCES `Students` (`STUDENT_ID`),
+  CONSTRAINT `studentreps_ibfk_3` FOREIGN KEY (`VERSION_ID`) REFERENCES `StudentRegClassesVer` (`VERSION_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `StudentReps`
+--
+
+LOCK TABLES `StudentReps` WRITE;
+/*!40000 ALTER TABLE `StudentReps` DISABLE KEYS */;
+/*!40000 ALTER TABLE `StudentReps` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Students`
+--
+
+DROP TABLE IF EXISTS `Students`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Students` (
+  `STUDENT_ID` int NOT NULL AUTO_INCREMENT,
+  `STUDENT_NAME_A` text NOT NULL,
+  `STUDENT_NAME_E` text NOT NULL,
+  `STUDENT_SEX` char(1) NOT NULL,
+  `STUDENT_MAJOR` char(3) NOT NULL,
+  `STUDENT_CH` smallint NOT NULL,
+  `STUDENT_GPA` float NOT NULL,
+  `STUDENT_LOGIN` int NOT NULL DEFAULT '0',
+  `STUDENT_LAST_LOGIN` datetime NOT NULL,
+  `STUDENT_NUMBER` int DEFAULT NULL,
+  `STUDENT_WHATSAPP` tinyint(1) NOT NULL DEFAULT '0',
+  `STUDENT_CAR_PLATE` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  PRIMARY KEY (`STUDENT_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Students`
+--
+
+LOCK TABLES `Students` WRITE;
+/*!40000 ALTER TABLE `Students` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Students` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `WhatsappGroups`
+--
+
+DROP TABLE IF EXISTS `WhatsappGroups`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `WhatsappGroups` (
+  `GROUP_ID` int NOT NULL AUTO_INCREMENT,
+  `COURSE_CODE` char(7) NOT NULL,
+  `WHATSAPP_LINK` text NOT NULL,
+  `VERSION_ID` int NOT NULL,
+  PRIMARY KEY (`GROUP_ID`),
+  KEY `VERSION_ID` (`VERSION_ID`),
+  KEY `COURSE_CODE` (`COURSE_CODE`),
+  CONSTRAINT `whatsappgroups_ibfk_1` FOREIGN KEY (`VERSION_ID`) REFERENCES `StudentRegClassesVer` (`VERSION_ID`),
+  CONSTRAINT `whatsappgroups_ibfk_2` FOREIGN KEY (`COURSE_CODE`) REFERENCES `Courses` (`COURSE_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `WhatsappGroups`
+--
+
+LOCK TABLES `WhatsappGroups` WRITE;
+/*!40000 ALTER TABLE `WhatsappGroups` DISABLE KEYS */;
+/*!40000 ALTER TABLE `WhatsappGroups` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `WhatsappNotifications`
+--
+
+DROP TABLE IF EXISTS `WhatsappNotifications`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `WhatsappNotifications` (
+  `NOTIFICATION_ID` int NOT NULL AUTO_INCREMENT,
+  `STUDENT_ID` int NOT NULL,
+  `HASH` text NOT NULL,
+  PRIMARY KEY (`NOTIFICATION_ID`),
+  KEY `STUDENT_ID` (`STUDENT_ID`),
+  CONSTRAINT `whatsappnotifications_ibfk_1` FOREIGN KEY (`STUDENT_ID`) REFERENCES `Students` (`STUDENT_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `WhatsappNotifications`
+--
+
+LOCK TABLES `WhatsappNotifications` WRITE;
+/*!40000 ALTER TABLE `WhatsappNotifications` DISABLE KEYS */;
+/*!40000 ALTER TABLE `WhatsappNotifications` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'CUFEPORTAL'
+--
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2022-11-10 17:31:16
