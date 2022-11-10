@@ -56,7 +56,7 @@ async function parse_html(string) {
     return data;
 }
 
-async function dowloadLink(entry, directory){
+async function dowload_link(entry, directory){
     const downloader = new Downloader({
         url: entry.link,
         directory: directory,
@@ -72,17 +72,18 @@ async function dowloadLink(entry, directory){
 }
 
 
-async function downloadExcels(directory) {
+async function download_excels(directory) {
     console.time("Excels Download Time")
 
     const html = await get_classes_html();
     const data = await parse_html(html);
 
     for (const entry of data) {
-        await dowloadLink(entry, directory);
+        await dowloadL_link(entry, directory);
     }
 
     console.timeEnd("Excels Download Time")
+    return data[data.length].index
 }
 
-module.exports = downloadExcels
+module.exports = download_excels
