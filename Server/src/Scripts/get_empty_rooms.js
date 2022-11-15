@@ -34,7 +34,7 @@ function get_empty_rooms(rooms, buildings, day, time) {
         return !room_w.includes(el);
     })
 
-    return room_a;
+    return room_a.sort();
 }
 
 module.exports = get_empty_rooms
