@@ -51,4 +51,4 @@ function get_classes(directory, fileName) {
     return rows;
 }
 
-module.exports = get_classes
+module.exports = {get_classes, get_json_class_data};
