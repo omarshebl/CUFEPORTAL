@@ -66,7 +66,17 @@ function insert_courses(connection, courses) {
 }
 
 function insert_students(connection, students) {
-    
+    insert_students_query = 'INSERT INTO Students (STUDENT_ID, STUDENT_NAME_A, STUDENT_NAME_E) ' + 
+                                    'VALUES (?, ?, ?) ' +
+                                    'ON DUPLICATE KEY UPDATE STUDENT_NAME_A = ?, STUDENT_NAME_E = ?';
+    connection.connect();
+    for (s of students) {
+        insert_query = [s.id, s.nameArabic, s.nameEnglish, s.nameArabic, s.nameEnglish];
+        connection.execute({sql: insert_students_query, values: insert_query},function (error) {
+            if (error) throw error;
+        })
+    }
+    connection.end();                            
 }
 
-module.exports = {insert_classes, insert_courses}
+module.exports = {insert_classes, insert_courses, insert_students}
