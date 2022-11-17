@@ -23,4 +23,19 @@ function get_students(filesData) {
     return students;
 }
 
-module.exports = get_students;
+function get_students_reg(filesData) {
+    let students_reg = [];
+    for (file of filesData) {
+        for(student of file.students) {
+            let date = new Date(student.registrationDate)
+            date = date.toLocaleString('en-GB', {hour12:false}).split(',')
+            day = date[0].split('/');
+            day = `${day[2]}-${day[1]}-${day[0]}`;
+            date = day+date[1];
+            students_reg.push({class_id: parseInt(file.class.index), id: parseInt(student.id), reg_date: date})
+        }
+    }
+    return students_reg;
+}
+
+module.exports = {get_students, get_students_reg};
