@@ -14,6 +14,15 @@ function remove_duplicates(data) {
     return no_dup;
 }
 
+function save_JSON(data, directory, fileName) {
+    jsonString = JSON.stringify(data);
+    fs.writeFile(`${directory}/${fileName}.json`, jsonString, function(err) {
+        if (err) {
+            console.log(err);
+        }
+    })
+} 
+
 function get_classes_no_duplicates(classes) {
     rows = [];
     for (row of classes) {
