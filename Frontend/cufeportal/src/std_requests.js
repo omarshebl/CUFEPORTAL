@@ -1,3 +1,4 @@
+const { integerPropType } = require('@mui/utils');
 const jsdom = require('jsdom');
 
 //TODO: implement code without using jsdom
@@ -222,6 +223,23 @@ function parse_transcript(html) {
     return transcript;
 }
 
+function parse_profile(html) {
+    const document = get_document(html);
+    const div = document.getElementById("win_4_Content");
+    const cells = div.getElementsByTagName('td');
+    const profile = {
+        student_id: parseInt(cells[1].textContent.trim()), 
+        name_a: cells[3].textContent.trim(), 
+        name_e: cells[5].textContent.trim(), 
+        program: cells[7].textContent.trim(), 
+        gpa: parseFloat(cells[9].textContent.trim()), 
+        last_gpa: parseFloat(cells[11].textContent.trim()), 
+        tot_credits: parseInt(cells[13].textContent.trim()), 
+        university_id: parseInt(cells[15].textContent.trim())
+    };
+    return profile;
+}
+
 const website = "https://std.eng.cu.edu.eg/";
 login_url = (time) => `${website}?_dc=${time}`;
 login_body = (id, pass) => `submitDirectEventConfig=%7B%22config%22%3A%7B%22extraParams%22%3A%7B%22tecla%22%3A13%7D%7D%7D&__EVENTTARGET=ctl03&__EVENTARGUMENT=txtPassword%7Cevent%7CKeyUp&__VIEWSTATE=%2FwEPDwUJMjA4NzY4MDUyD2QWAgIDD2QWAgIDDxQqElN5c3RlbS5XZWIuVUkuUGFpcgEPBQRiYXNlDxYCHghJbWFnZVVybAUSaG9tZXBhZ2ViYW5uZXIuZ2lmZGQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgUFBWN0bDAzBQdXaW5kb3cxBQt0eHRVc2VybmFtZQULdHh0UGFzc3dvcmQFB0J1dHRvbjEV1ojdRtapbx3MTJ7fsuSYqEsXanhW%2FbDv%2BLkkNB%2BFsw%3D%3D&__VIEWSTATEGENERATOR=C2EE9ABB&__EVENTVALIDATION=%2FwEdAALVILSIlTYVfKj6MDSXQAcXNpGzZOwh9RDF3%2FtMV5ai8yBE4Rt6HVlNtleMUQjroyNPxvqGC1hJLx00GORUD%2FJV&txtUsername=${id}&txtPassword=${pass}`;
@@ -332,9 +350,10 @@ async function classwork_req(cookie) {
 const profile_body = "win_4%22%2C%22ControlPath%22%3A%22~%2FSIS%2FModules%2FStudent%2FMyProfile%2FMyProfile";
 async function profile_req(cookie) {
     let res = await fetch(post_url(Date.now()), post_request(cookie, profile_body));
-    res = await res.text();                   
+    res = await res.text();
+    res = parse_profile(res);
     return res;
-}; //TODO
+};
 
 const report_body = "win_5%22%2C%22ControlPath%22%3A%22~%2FSIS%2FModules%2FStudent%2FGraduationReport%2FGraduationReport";
 async function report_req(cookie) {
@@ -349,7 +368,7 @@ async function transcript_req(cookie) {
     res = await res.text();  
     res = parse_transcript(res);                 
     return res;
-}; //TODO
+};
 
 const regstatus_body = "win_17%22%2C%22ControlPath%22%3A%22~%2FSIS%2FModules%2FStudent%2FRegistrationStatus%2FRegistrationStatus";
 async function regstatus_req(cookie) {
