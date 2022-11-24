@@ -186,6 +186,42 @@ function parse_classwork(html) {
     return classwork;
 }
 
+function parse_transcript(html) {
+    const document = get_document(html);
+    const table = document.getElementById("cont_win_3_Table1");
+    const rows = table.getElementsByTagName('tr');
+    let transcript = {semesters:[], cum_gpa:{}, last_gpa:{}, tot_credits:{}};
+    let semester = {};
+    let sem = '';
+    for(row of rows) {
+        const backgroundColor = row.style.backgroundColor;
+        if(backgroundColor === 'rgb(49, 162, 172)') continue;
+        if(backgroundColor === 'rgb(255, 183, 69)') {
+            sem = row.getElementsByTagName('td')[0].textContent.trim().split('-');
+            semester = {season: sem[0], year: parseInt(sem[1])};
+            transcript.semesters[sem] = {semester: semester, courses: []}
+        } else if (backgroundColor === 'rgb(237, 239, 92)') {
+            transcript.cum_gpa = {type: 'Cumulative GPA', value: parseFloat(row.getElementsByTagName('td')[0].textContent.split('=')[1].trim())};
+        } else if (backgroundColor === 'rgb(182, 239, 92)') {
+            transcript.last_gpa = {type: 'Last Term GPA', value: parseFloat(row.getElementsByTagName('td')[0].textContent.split('=')[1].trim())};
+        } else if (backgroundColor === 'rgb(109, 230, 86)') {
+            transcript.tot_credits = {type: 'Total Credits', value: parseInt(row.getElementsByTagName('td')[0].textContent.split('=')[1].trim())};
+        } else {
+            cols = row.getElementsByTagName('td');
+            transcript.semesters[sem].courses.push({
+                semester: semester,
+                course_code: cols[0].textContent.trim(),
+                course_name: cols[1].textContent.trim(),
+                course_grade: cols[2].textContent.trim(),
+                course_credit: parseInt(cols[3].textContent.trim()),
+                quality_points : parseFloat(cols[4].textContent.trim())
+            })
+        }
+    };
+    transcript.semesters = Object.values(transcript.semesters);
+    return transcript;
+}
+
 const website = "https://std.eng.cu.edu.eg/";
 login_url = (time) => `${website}?_dc=${time}`;
 login_body = (id, pass) => `submitDirectEventConfig=%7B%22config%22%3A%7B%22extraParams%22%3A%7B%22tecla%22%3A13%7D%7D%7D&__EVENTTARGET=ctl03&__EVENTARGUMENT=txtPassword%7Cevent%7CKeyUp&__VIEWSTATE=%2FwEPDwUJMjA4NzY4MDUyD2QWAgIDD2QWAgIDDxQqElN5c3RlbS5XZWIuVUkuUGFpcgEPBQRiYXNlDxYCHghJbWFnZVVybAUSaG9tZXBhZ2ViYW5uZXIuZ2lmZGQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgUFBWN0bDAzBQdXaW5kb3cxBQt0eHRVc2VybmFtZQULdHh0UGFzc3dvcmQFB0J1dHRvbjEV1ojdRtapbx3MTJ7fsuSYqEsXanhW%2FbDv%2BLkkNB%2BFsw%3D%3D&__VIEWSTATEGENERATOR=C2EE9ABB&__EVENTVALIDATION=%2FwEdAALVILSIlTYVfKj6MDSXQAcXNpGzZOwh9RDF3%2FtMV5ai8yBE4Rt6HVlNtleMUQjroyNPxvqGC1hJLx00GORUD%2FJV&txtUsername=${id}&txtPassword=${pass}`;
@@ -310,7 +346,8 @@ async function report_req(cookie) {
 const transcript_body = "win_3%22%2C%22ControlPath%22%3A%22~%2FSIS%2FModules%2FStudent%2FMyResult%2FTranscript%2FTranscript";
 async function transcript_req(cookie) {
     let res = await fetch(post_url(Date.now()), post_request(cookie, transcript_body));
-    res = await res.text();                   
+    res = await res.text();  
+    res = parse_transcript(res);                 
     return res;
 }; //TODO
 
