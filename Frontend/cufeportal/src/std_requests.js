@@ -112,29 +112,17 @@ function parse_absence(html) {
     const table = document.getElementById("ctl07_GridView1");
     const rows = table.getElementsByTagName('tr');
     let absence_table = {};
+    let first = true;
     for (row of rows) {
+        if (first) {first = false; continue;}
         let course_code;
         let course_name;
         let occurence = {};
-        row = row.getElementsByTagName('td');
-        i = 0;
-        for (col of row) {
-            switch (i) {
-                case 1:
-                    occurence.week = parseInt(col.textContent.trim().split(' ')[1]);
-                    break;
-                case 3:
-                    occurence.type = col.textContent.trim();
-                    break;
-                case 4:
-                    course_code = col.textContent.trim();
-                    break;
-                case 5:
-                    course_name = col.textContent.trim();
-                    break;
-            }
-            i++;
-        }
+        cells = row.getElementsByTagName('td');
+        occurence.week = parseInt(cells[1].textContent.trim().split(' ')[1]);
+        occurence.type = cells[3].textContent.trim();
+        course_code = cells[4].textContent.trim();
+        course_name = cells[5].textContent.trim();
         if (!absence_table[course_code]) {
             absence_table[course_code] = {
                 code: course_code,
@@ -145,7 +133,6 @@ function parse_absence(html) {
             absence_table[course_code].absence.push(occurence);
         }
     }
-    delete absence_table[undefined];
     absence_table = Object.values(absence_table);
     return absence_table;
 }
@@ -156,31 +143,12 @@ function parse_classwork(html) {
     const rows = table.getElementsByTagName('tr');
     let classwork = [];
     for(row of rows) {
-        row = row.getElementsByTagName('td');
-        let code, name, midterm, dailywork;
-        i=0;
-        for (col of row) {
-            switch (i) {
-                case 0:
-                    code = col.textContent.trim();
-                    break;
-                case 1:
-                    name = col.textContent.trim();
-                    break;
-                case 2:
-                    midterm = col.textContent.trim();
-                    break;
-                case 3:
-                    dailywork = col.textContent.trim();
-                    break;
-            };
-            i++;
-        }
+        cells = row.getElementsByTagName('td');
         classwork.push({
-            code: code,
-            name: name,
-            midterm: midterm,
-            dailywork: dailywork
+            code: cells[0].textContent.trim(),
+            name: cells[1].textContent.trim(),
+            midterm: cells[2].textContent.trim(),
+            dailywork: cells[3].textContent.trim()
         });
     };
     classwork.shift();
