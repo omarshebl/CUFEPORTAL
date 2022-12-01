@@ -1,4 +1,3 @@
-const { integerPropType } = require('@mui/utils');
 const jsdom = require('jsdom');
 
 //TODO: implement code without using jsdom
@@ -11,7 +10,6 @@ function extract_time_to24(time) {
     time = time.split(":");
     hour = parseInt(time[0]);
     minute = parseInt(time[1]);
-
     if (minute > 0) hour += 1;
     if (hour < 8) hour += 12;
     return hour;
