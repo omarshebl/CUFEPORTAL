@@ -1,0 +1,135 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+#root {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+.header {
+    margin-top: 2%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 70px;
+    flex: 0 1 auto;
+}
+
+.header-text {
+    text-align: left;
+    margin-left: 5%;
+    font-size: 3rem;
+    font-weight: 600;
+    background: linear-gradient(-45deg, #0076BA, #EFBD3D);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    cursor: pointer;
+}
+.header-text:hover {
+    background: linear-gradient(90deg, #0076BA, #EFBD3D);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.login-button {
+    align-items: center;
+    font-size: 15px;
+    width: 120px;
+    height: 45px;
+    margin-right: 5%;
+    color: #0076BA;
+    background: transparent;
+    border: 1px solid #0076BA;
+    transition: all 0.3s ease-in;
+}
+
+.login-button:hover {
+    border-color: #EFBD3D;
+    background: #EFBD3D;
+    color: white;
+    font-size: 17px;
+    transition: all 0.3s ease-in;
+    cursor: pointer;
+}
+
+.main-area {
+    position: relative;
+    height: 100%;
+}
+
+.search-input {
+    width: min(88%,  800px);
+    height: 50px;
+    border: 1px solid #0076BA;
+    font-size: 16px;
+    text-align: left;
+    padding-left: 10px;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #EFBD3D;
+}
+
+.search-input::placeholder {
+    color: #0076BA;
+    opacity: 0.5;
+}
+
+.absence-con {
+    background-color: #0076BA;
+    color: aliceblue;
+    border-radius: 10px;
+    width: min(88%,  800px);
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+.absence-info {
+    display: flex;
+    justify-content: left;
+    text-align: center;
+    margin-left: 5%;
+    height: 50px;
+}
+
+.absence-entries {
+}
+
+.absence-entry {
+    display: flex;
+    justify-content: left;
+    text-align: center;
+    margin-left: 5%;
+    height: 50px;
+}
+
+.absence-entry > p {
+    margin-right: 5%;
+}
+
+.footer {
+    position: absolute;
+    display: flex;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    flex: 0 1 40px;
+}
+
+.footer-text {
+    color: black;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
