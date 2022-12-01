@@ -1,4 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import './Styles/index.css';
 import App from './App';
+
+ReactDOM.hydrateRoot(document.querySelector('#root'), <App />)
