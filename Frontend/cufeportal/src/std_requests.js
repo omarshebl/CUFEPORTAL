@@ -11,7 +11,11 @@ function extract_time_to24(time) {
     hour = parseInt(time[0]);
     minute = parseInt(time[1]);
     if (minute > 0) hour += 1;
-    if (hour < 8) hour += 12;
+    if (minute > 0) {
+        if ((hour >= 1 && hour <=8)) hour += 12;
+    } else {
+        if (!(hour >= 8 && hour <=12)) hour += 12;
+    }
     return hour;
 }
 
